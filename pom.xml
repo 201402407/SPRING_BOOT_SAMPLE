@@ -42,8 +42,12 @@
 		<dependency> 
 			<groupId>org.projectlombok</groupId> 
 			<artifactId>lombok</artifactId> 
-			<version>1.18.16</version> 
 			<scope>provided</scope> 
+		</dependency>
+		<!-- WebClient -> RestTemplate는 곧 deprecated 될 듯. Non-Blocking I/O 가능  -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 	</dependencies>
 
