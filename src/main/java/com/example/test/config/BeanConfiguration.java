@@ -17,6 +17,11 @@ public class BeanConfiguration {
 	// application.properties에서 설정한 프로퍼티 값 불러옴
 	@Value("${kakao.apikey}")
 	private String kakaoApiKey;
+	@Value("${naver.clientId}")
+	private String naverClientId;
+	@Value("${naver.clientSecret}")
+	private String naverClientSecret;
+	
 			
 	@Bean(name="kakaoWebClient")
 	public WebClient kakaoWebClient(ObjectMapper baseConfig) {
@@ -25,6 +30,17 @@ public class BeanConfiguration {
 				.exchangeStrategies(jacksonCodecStrategies(baseConfig))
 				.defaultHeaders(httpHeaders -> {
 					httpHeaders.addAll(createKakaoHeaders());
+				})
+				.build();
+	}
+	
+	@Bean(name="naverWebClient")
+	public WebClient naverWebClient(ObjectMapper baseConfig) {
+		return WebClient.builder()
+				.baseUrl("https://openapi.naver.com")
+//				.exchangeStrategies(jacksonCodecStrategies(baseConfig))	// Naver API는 default가 Camel Case
+				.defaultHeaders(httpHeaders -> {
+					httpHeaders.addAll(createNaverHeaders());
 				})
 				.build();
 	}
@@ -39,12 +55,19 @@ public class BeanConfiguration {
                 .build();
 	}
 	
-	//
-	
 	// 카카오 API Header 설정
 	private HttpHeaders createKakaoHeaders() {
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.add(HttpHeaders.AUTHORIZATION, "KakaoAK " + kakaoApiKey);
+	    return headers;
+	}
+	
+	// 네이버 API Header 설정
+	private HttpHeaders createNaverHeaders() {
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.add(HttpHeaders.ACCEPT, "*/*");
+	    headers.add("X-Naver-Client-Id", naverClientId);
+	    headers.add("X-Naver-Client-Secret", naverClientSecret);
 	    return headers;
 	}
 }

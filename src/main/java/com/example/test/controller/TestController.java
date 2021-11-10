@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.test.vo.KakaoWebClientRVO;
+import com.example.test.vo.NaverWebClientRVO;
 import com.example.test.vo.SameWordRVO;
 import com.example.test.vo.SameWordVO;
 
@@ -33,9 +34,14 @@ public class TestController {
 	// TRACE < DEBUG < INFO < WARN < ERROR
 	private final Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
 	
+	// 순환참조 발생할 수 없기 때문에 필드 주입
 	@Autowired
 	@Qualifier("kakaoWebClient")
 	private WebClient kakaoWebClient;
+	
+	@Autowired
+	@Qualifier("naverWebClient")
+	private WebClient naverWebClient;
 	
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -70,6 +76,34 @@ public class TestController {
 			});
 		
 		return kakaoApiResult;
+	}
+	
+	// Content-type : Application/json
+	@RequestMapping(value = "/getNaverLocalForKeyword/{keyword}/{format}", method = RequestMethod.GET)
+	public Mono<NaverWebClientRVO> getNaverLocalForKeyword(@PathVariable("keyword") String keyword, @PathVariable("format") String format) {
+		// PathVariable이 null인 경우 -> 사전에 405 ERROR
+		Mono<NaverWebClientRVO> naverApiResult = naverWebClient.mutate()
+			.build()	// 싱글톤 Bean이지만, 초기 설정을 가진 채 별도 객체 생성해서 사용
+			.get()
+			.uri(	// baseURL 하위 URI Custom Building
+					uriBuilder -> uriBuilder.path("/v1/search/local.{format}")
+					.queryParam("query", keyword)
+					.queryParam("start", 1)	// default: 1
+					.queryParam("display", 29)	// 5개씩 검색
+					.build(format))
+			.retrieve()
+			.onStatus(
+					httpStatus -> httpStatus != HttpStatus.OK,
+				    clientResponse -> {
+				      return clientResponse.createException()
+				         .flatMap(it -> Mono.error(new RuntimeException("code : " + clientResponse.statusCode())));
+				      })
+			.bodyToMono(NaverWebClientRVO.class)
+			.onErrorResume(throwable -> {	// 에러 발생 시
+				return Mono.error(new RuntimeException(throwable));
+			});
+		
+		return naverApiResult;
 	}
 	
 	@RequestMapping(value = "/getTemp", method = RequestMethod.GET)
