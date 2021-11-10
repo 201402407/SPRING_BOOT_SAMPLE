@@ -21,6 +21,7 @@ import com.example.test.vo.KakaoWebClientRVO;
 import com.example.test.vo.NaverWebClientRVO;
 import com.example.test.vo.SameWordRVO;
 import com.example.test.vo.SameWordVO;
+import com.example.test.vo.SearchVO;
 
 import ch.qos.logback.classic.Logger;
 import common.CommonResponse;
@@ -42,6 +43,9 @@ public class TestController {
 	@Autowired
 	@Qualifier("naverWebClient")
 	private WebClient naverWebClient;
+	
+	@Autowired
+	private 
 	
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -175,6 +179,28 @@ public class TestController {
 			String resultMsg = word.equals(answerWord) ? "정답입니다!" : "틀렸습니다ㅠㅠ";
 			boolean isSame = word.equals(answerWord);
 			String resultWord = answerWord;
+			
+			SameWordRVO rvo = SameWordRVO.builder()
+					.resultMsg(resultMsg)
+					.isSame(isSame)
+					.resultWord(resultWord)
+					.build();
+			
+			return ResponseEntity.ok().body(new CommonResponse<SameWordRVO>(rvo));	
+		}
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("입력 값 오류 발생", HttpStatus.BAD_REQUEST.value()));
+	}
+	
+	// Content-type : application-json 방식
+	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<? extends CustomResponse> search (@RequestBody SearchVO pvo) {
+		Optional<String> keywordOptional = Optional.ofNullable(pvo.getKeyword());
+		
+		// 값 존재
+		if(keywordOptional.isPresent()) {
+			String keyword = pvo.getKeyword();
+			
 			
 			SameWordRVO rvo = SameWordRVO.builder()
 					.resultMsg(resultMsg)
