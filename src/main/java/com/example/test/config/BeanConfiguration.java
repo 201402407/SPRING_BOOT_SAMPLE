@@ -39,6 +39,8 @@ public class BeanConfiguration {
                 .build();
 	}
 	
+	//
+	
 	// 카카오 API Header 설정
 	private HttpHeaders createKakaoHeaders() {
 	    HttpHeaders headers = new HttpHeaders();
