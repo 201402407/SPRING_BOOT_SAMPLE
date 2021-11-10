@@ -46,9 +46,9 @@ public class TestController {
 	
 	// Content-type : Application/json
 	@RequestMapping(value = "/getKakaoLocalForKeyword/{keyword}/{format}", method = RequestMethod.GET)
-	public ResponseEntity<? extends CustomResponse> getKakaoLocalForKeyword(@PathVariable("keyword") String keyword, @PathVariable("format") String format) {
+	public Mono<KakaoWebClientRVO> getKakaoLocalForKeyword(@PathVariable("keyword") String keyword, @PathVariable("format") String format) {
 		// PathVariable이 null인 경우 -> 사전에 405 ERROR
-		kakaoWebClient.mutate()
+		Mono<KakaoWebClientRVO> kakaoApiResult = kakaoWebClient.mutate()
 			.build()	// 싱글톤 Bean이지만, 초기 설정을 가진 채 별도 객체 생성해서 사용
 			.get()
 			.uri(	// baseURL 하위 URI Custom Building
@@ -69,7 +69,7 @@ public class TestController {
 				return Mono.error(new RuntimeException(throwable));
 			});
 		
-		return null;
+		return kakaoApiResult;
 	}
 	
 	@RequestMapping(value = "/getTemp", method = RequestMethod.GET)
