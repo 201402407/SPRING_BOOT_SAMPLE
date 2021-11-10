@@ -6,12 +6,18 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @DynamicInsert  // 변경된 필드만 적용(세팅되지 않은 필드는 NULL로)
 @Table(name="SEARCH_RESULT")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class KeywordEntity {
 	
 	@Id

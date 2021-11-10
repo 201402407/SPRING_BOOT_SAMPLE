@@ -2,6 +2,8 @@ package com.example.test.controller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.test.service.KeywordService;
 import com.example.test.vo.KakaoWebClientRVO;
 import com.example.test.vo.NaverWebClientRVO;
 import com.example.test.vo.SameWordRVO;
@@ -45,7 +48,7 @@ public class TestController {
 	private WebClient naverWebClient;
 	
 	@Autowired
-	private 
+	private KeywordService keywordService;
 	
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -194,23 +197,18 @@ public class TestController {
 	
 	// Content-type : application-json 방식
 	@RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<? extends CustomResponse> search (@RequestBody SearchVO pvo) {
-		Optional<String> keywordOptional = Optional.ofNullable(pvo.getKeyword());
+	public ResponseEntity<? extends CustomResponse> search (@RequestBody @Valid SearchVO pvo) {
 		
-		// 값 존재
-		if(keywordOptional.isPresent()) {
-			String keyword = pvo.getKeyword();
+		try {
+			keywordService.search(pvo);
 			
-			
-			SameWordRVO rvo = SameWordRVO.builder()
-					.resultMsg(resultMsg)
-					.isSame(isSame)
-					.resultWord(resultWord)
-					.build();
-			
-			return ResponseEntity.ok().body(new CommonResponse<SameWordRVO>(rvo));	
+			return ResponseEntity.ok().body(new CommonResponse<String>("검색 기록 저장"));	
 		}
-		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("입력 값 오류 발생", HttpStatus.BAD_REQUEST.value()));
+		catch(IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("입력 값 오류 발생", HttpStatus.BAD_REQUEST.value()));
+		}
+		catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR.value()));
+		}
 	}
 }
