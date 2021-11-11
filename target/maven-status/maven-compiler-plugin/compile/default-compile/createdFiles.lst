@@ -10,6 +10,7 @@ com\example\test\controller\TestController.class
 com\example\test\vo\SearchVO.class
 com\example\test\entity\KeywordEntity.class
 com\example\test\entity\KeywordEntity$KeywordEntityBuilder.class
+com\example\test\vo\SearchVO$SearchVOBuilder.class
 com\example\test\TestApplication.class
 com\example\test\vo\SameWordRVO$SameWordRVOBuilder.class
 com\example\test\vo\KakaoApiDocument.class
@@ -21,6 +22,7 @@ com\example\test\vo\KakaoApiSameName.class
 com\example\test\mapConstruct\KeywordMapperImpl.class
 com\example\test\vo\SameWordRVO.class
 com\example\test\mapConstruct\KeywordMapper.class
+com\example\test\config\annotation\PageableLimits.class
 common\ErrorResponse.class
 com\example\test\service\KeywordService.class
 com\example\test\service\impl\KeywordServiceImpl.class

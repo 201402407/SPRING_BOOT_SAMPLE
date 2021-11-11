@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.test.config.annotation.PageableLimits;
 import com.example.test.entity.KeywordEntity;
 import com.example.test.repository.KeywordRepository;
 import com.example.test.service.KeywordService;
@@ -238,13 +239,8 @@ public class TestController {
 	// Paging URI Parameter로 받아오는 방식
 	@RequestMapping(value = "/bestKeywordList", method = RequestMethod.GET)
 	public ResponseEntity<? extends CustomResponse> bestKeywordList (
-//			 @PageableDefault(sort = { "name", "displayOrder" }, value = 10)
-//	         @SortDefault.SortDefaults({
-//	         @SortDefault(sort = "name", direction = Sort.Direction.DESC)
-//	         })
-			
-			@PageableDefault(size = 10)
-//			@PageableLimits()
+			@PageableDefault(size = 30)
+			@PageableLimits(maxSize = 10)
 			@SortDefault.SortDefaults({
 					@SortDefault(sort = "searchCount", direction = Sort.Direction.DESC),
 					@SortDefault(sort = "keyword", direction = Sort.Direction.ASC)
