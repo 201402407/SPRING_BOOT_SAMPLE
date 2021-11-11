@@ -37,7 +37,7 @@ public class KeywordServiceImpl implements KeywordService {
 			if(keywordEntity.isPresent()) {
 				KeywordEntity selectedKeywordEntity = keywordEntity.get();
 				// count +1로 DB에 update
-				selectedKeywordEntity.setSearchCount(selectedKeywordEntity.getSearchCount() + 1);
+				selectedKeywordEntity.incrementSearchCount();
 				KeywordEntity resultEntity = keywordRepository.save(selectedKeywordEntity);
 				dto = KeywordMapper.INSTANCE.toDto(resultEntity);
 //				dto = KeywordDTO.EntityToDto(resultEntity);
@@ -48,6 +48,8 @@ public class KeywordServiceImpl implements KeywordService {
 						.keyword(keyword)
 						.searchCount(1)
 						.build();
+				
+				createkeywordEntity.firstSearching();
 				KeywordEntity resultEntity = keywordRepository.save(createkeywordEntity);
 				dto = KeywordMapper.INSTANCE.toDto(resultEntity);
 //				dto = KeywordDTO.EntityToDto(resultEntity);
