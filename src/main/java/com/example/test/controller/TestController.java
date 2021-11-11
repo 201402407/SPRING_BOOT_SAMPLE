@@ -1,12 +1,18 @@
 package com.example.test.controller;
 
+import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.test.entity.KeywordEntity;
+import com.example.test.repository.KeywordRepository;
 import com.example.test.service.KeywordService;
 import com.example.test.vo.KakaoWebClientRVO;
 import com.example.test.vo.KeywordDTO;
@@ -51,7 +59,20 @@ public class TestController {
 	@Autowired
 	private KeywordService keywordService;
 	
+	@Autowired
+	private KeywordRepository keywordRepository;
 	
+    @PostConstruct
+    public void initializing() {
+        for (int i = 0; i < 97; i++) {
+            KeywordEntity keyword = KeywordEntity.builder()
+            		.keyword("TEMP" + i)
+            		.searchCount(i / 10)
+                    .build();
+            keywordRepository.save(keyword);
+        }
+    }
+    
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String getTestPage() {
 		String viewName = "index.html";
@@ -203,6 +224,34 @@ public class TestController {
 		try {
 			KeywordDTO resultDto = keywordService.search(pvo);
 			return ResponseEntity.ok().body(new CommonResponse<KeywordDTO>(resultDto));
+		}
+		catch(IllegalArgumentException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("입력 값 오류 발생", HttpStatus.BAD_REQUEST.value()));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR.value()));
+		}
+	}
+	
+	// Paging URI Parameter로 받아오는 방식
+	@RequestMapping(value = "/bestKeywordList", method = RequestMethod.GET)
+	public ResponseEntity<? extends CustomResponse> bestKeywordList (
+//			 @PageableDefault(sort = { "name", "displayOrder" }, value = 10)
+//	         @SortDefault.SortDefaults({
+//	         @SortDefault(sort = "name", direction = Sort.Direction.DESC)
+//	         })
+			
+			@PageableDefault(size = 10)
+//			@PageableLimits()
+			@SortDefault.SortDefaults({
+					@SortDefault(sort = "searchCount", direction = Sort.Direction.DESC),
+					@SortDefault(sort = "keyword", direction = Sort.Direction.ASC)
+			}) Pageable pageable) {
+		try {
+			List<KeywordDTO> resultDto = keywordService.getKeywordRankingList(pageable);
+			return ResponseEntity.ok().body(new CommonResponse<List<KeywordDTO>>(resultDto));	
 		}
 		catch(IllegalArgumentException e) {
 			e.printStackTrace();

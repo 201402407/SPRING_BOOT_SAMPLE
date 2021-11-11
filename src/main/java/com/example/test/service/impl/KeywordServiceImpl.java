@@ -1,10 +1,16 @@
 package com.example.test.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import com.example.test.entity.KeywordEntity;
@@ -48,6 +54,28 @@ public class KeywordServiceImpl implements KeywordService {
 			}
 			
 			return dto;
+		}
+		catch(IllegalArgumentException e) {
+			throw e;
+		}
+		catch(Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public List<KeywordDTO> getKeywordRankingList(Pageable pageable) throws Exception {
+		try {
+			// Ordering
+			List<Order> orders = new ArrayList<Order>();
+	        Order StartTimeOrder = new Order(Sort.Direction.DESC, "StartTime");
+	        orders.add(StartTimeOrder);
+	        Order progDateOrder = new Order(Sort.Direction.ASC, "ProgDate");
+	        orders.add(progDateOrder);
+	        
+	        // Paging
+			Page<KeywordEntity> keywordRankingList = keywordRepository.findAll(pageable);
+			return KeywordMapper.INSTANCE.toDtoList(keywordRankingList.toList());
 		}
 		catch(IllegalArgumentException e) {
 			throw e;
