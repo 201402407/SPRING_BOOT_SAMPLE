@@ -21,6 +21,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.test.service.KeywordService;
 import com.example.test.vo.KakaoWebClientRVO;
+import com.example.test.vo.KeywordDTO;
 import com.example.test.vo.NaverWebClientRVO;
 import com.example.test.vo.SameWordRVO;
 import com.example.test.vo.SameWordVO;
@@ -200,14 +201,15 @@ public class TestController {
 	public ResponseEntity<? extends CustomResponse> search (@RequestBody @Valid SearchVO pvo) {
 		
 		try {
-			keywordService.search(pvo);
-			
-			return ResponseEntity.ok().body(new CommonResponse<String>("검색 기록 저장"));	
+			KeywordDTO resultDto = keywordService.search(pvo);
+			return ResponseEntity.ok().body(new CommonResponse<KeywordDTO>(resultDto));
 		}
 		catch(IllegalArgumentException e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("입력 값 오류 발생", HttpStatus.BAD_REQUEST.value()));
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("서버 오류 발생", HttpStatus.INTERNAL_SERVER_ERROR.value()));
 		}
 	}

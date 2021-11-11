@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.test.entity.KeywordEntity;
 import com.example.test.repository.KeywordRepository;
 import com.example.test.service.KeywordService;
+import com.example.test.vo.KeywordDTO;
 import com.example.test.vo.SearchVO;
 
 @Service
@@ -20,23 +21,30 @@ public class KeywordServiceImpl implements KeywordService {
 
 	@Override
 	@Transactional
-	public void search(SearchVO pvo) throws Exception {
+	public KeywordDTO search(SearchVO pvo) throws Exception {
 		String keyword = pvo.getKeyword();
 		try {
+			KeywordDTO dto = new KeywordDTO();
+			
 			Optional<KeywordEntity> keywordEntity = keywordRepository.findById(keyword);
-			keywordEntity.ifPresentOrElse(selectedKeywordEntity -> {
+			if(keywordEntity.isPresent()) {
+				KeywordEntity selectedKeywordEntity = keywordEntity.get();
 				// count +1로 DB에 update
 				selectedKeywordEntity.setSearchCount(selectedKeywordEntity.getSearchCount() + 1);
-				keywordRepository.save(selectedKeywordEntity);
-			}, 
-			() -> {
+				KeywordEntity resultEntity = keywordRepository.save(selectedKeywordEntity);
+//				dto = KeywordDTO.EntityToDto(resultEntity);
+			}
+			else {
 				// count 1로 DB에 create
 				KeywordEntity createkeywordEntity = KeywordEntity.builder()
 						.keyword(keyword)
 						.searchCount(1)
 						.build();
-				keywordRepository.save(createkeywordEntity);
-			});
+				KeywordEntity resultEntity = keywordRepository.save(createkeywordEntity);
+//				dto = KeywordDTO.EntityToDto(resultEntity);
+			}
+			
+			return dto;
 		}
 		catch(IllegalArgumentException e) {
 			throw e;
