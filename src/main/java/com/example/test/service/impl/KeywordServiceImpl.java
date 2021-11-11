@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.test.entity.KeywordEntity;
+import com.example.test.mapConstruct.KeywordMapper;
 import com.example.test.repository.KeywordRepository;
 import com.example.test.service.KeywordService;
 import com.example.test.vo.KeywordDTO;
@@ -32,6 +33,7 @@ public class KeywordServiceImpl implements KeywordService {
 				// count +1로 DB에 update
 				selectedKeywordEntity.setSearchCount(selectedKeywordEntity.getSearchCount() + 1);
 				KeywordEntity resultEntity = keywordRepository.save(selectedKeywordEntity);
+				dto = KeywordMapper.INSTANCE.toDto(resultEntity);
 //				dto = KeywordDTO.EntityToDto(resultEntity);
 			}
 			else {
@@ -41,6 +43,7 @@ public class KeywordServiceImpl implements KeywordService {
 						.searchCount(1)
 						.build();
 				KeywordEntity resultEntity = keywordRepository.save(createkeywordEntity);
+				dto = KeywordMapper.INSTANCE.toDto(resultEntity);
 //				dto = KeywordDTO.EntityToDto(resultEntity);
 			}
 			
