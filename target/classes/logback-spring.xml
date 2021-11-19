@@ -12,7 +12,7 @@
 	<springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
 	
 	<!-- pattern --> 
-	<property name="LOG_PATTERN" value="[%-5level] %d{yy-MM-dd HH:mm:ss} [%thread] [%logger{0}:%line] - %msg%n"/>
+	<property name="LOG_PATTERN" value="[%-5level] %d{yy-MM-dd HH:mm:ss:SSS} [%thread] [%logger{0}:%line] - %msg%n"/>
 	 
 	<!-- Console Appender --> 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"> 
