@@ -129,7 +129,8 @@ public class TestController {
 				         .flatMap(it -> Mono.error(new RuntimeException("code : " + clientResponse.statusCode())));
 				      })
 			.bodyToMono(NaverWebClientRVO.class)
-			.onErrorResume(throwable -> {	// 에러 발생 시
+//			.retry()	// Error 발생 시 재구독.
+			.onErrorResume(throwable -> {	// 에러 발생 시 예외를 Catch하여 대체 Workflow 생성
 				return Mono.error(new RuntimeException(throwable));
 			});
 		

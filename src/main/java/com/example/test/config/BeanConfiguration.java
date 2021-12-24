@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 @Configuration
 public class BeanConfiguration {
@@ -53,7 +53,7 @@ public class BeanConfiguration {
 	// Json decoding(역직렬화) 시 SNAKE_CASE to CamelCase 변환
 	private ExchangeStrategies jacksonCodecStrategies(ObjectMapper baseConfig) {
 		ObjectMapper newMapper = baseConfig.copy();
-        newMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        newMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		return ExchangeStrategies.builder()
                 .codecs(configurer ->
                         configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(newMapper)))
