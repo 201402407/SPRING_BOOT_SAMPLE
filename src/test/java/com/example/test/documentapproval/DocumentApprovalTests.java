@@ -4,6 +4,8 @@ import com.example.test.TestApplicationTests;
 import com.example.test.documentapproval.constants.DocumentStatus;
 import com.example.test.documentapproval.constants.DocumentType;
 import com.example.test.documentapproval.document.DocumentRepository;
+import com.example.test.documentapproval.entities.Document;
+import com.example.test.documentapproval.entities.Member;
 import com.example.test.documentapproval.repository.MemberRepository;
 import com.example.test.documentapproval.service.DocumentService;
 import org.json.JSONArray;
@@ -14,6 +16,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,12 +29,8 @@ public class DocumentApprovalTests extends TestApplicationTests {
         super("/api/documents");
     }
 
-    @Mock
+    @Autowired
     private DocumentRepository documentRepository;
-    @Mock
-    private MemberRepository memberRepository;
-    @InjectMocks
-    private DocumentService documentService;
 
     @Nested
     @DisplayName("문서 생성")
@@ -63,12 +65,18 @@ public class DocumentApprovalTests extends TestApplicationTests {
             JSONObject data = createData();
 
             success(reqPost("/", data))
-                    .andExpect(jsonPath("$.response.documentId", is("6")))
+//                    .andExpect(jsonPath("$.response.documentId", is("6")))
                     .andExpect(jsonPath("$.response.registeredMember.memberId", is("root")))
                     .andExpect(jsonPath("$.response.documentStatus", is(DocumentStatus.PROGRESS.getCode())))
                     .andExpect(jsonPath("$.response.documentType", is(DocumentType.COST_SETTLEMENT.getCode())))
                     .andExpect(jsonPath("$.response.title", is("문서 제목 입니다!")))
                     .andExpect(jsonPath("$.response.comment", is("내용입니다!")));
         }
+    }
+
+    @Transactional
+    @Test
+    void DOCUMENT_전체_조회시_N1_문제_발생_확인() {
+        List<Document> documentList = documentRepository.findAll();
     }
 }

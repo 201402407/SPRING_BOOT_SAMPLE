@@ -5,7 +5,7 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   h2:
     console:
