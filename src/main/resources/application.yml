@@ -1,0 +1,76 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  datasource:
+    platform: h2
+    driver-class-name: org.h2.Driver
+    url: "jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1"
+    username: sa
+    password:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  jackson:
+    property-naming-strategy: LOWER_CAMEL_CASE
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+springdoc:
+  version: '@project.version@'
+  api-docs:
+      path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  groups:
+    enabled: true
+  swagger-ui:
+    display-request-duration: true
+    groups-order: DESC
+    tags-sorter: alpha
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+  show-actuator: true
+
+logging:
+  level:
+    root: info
+    com:
+      example:
+        test: debug
+
+kakao:
+  apikey: 3c927f05439078cfc66a62c232f732c5
+
+naver:
+  clientId: ctT6ykOrU2zRVJ4ebByu
+  clientSecret: mJEPK_2hu5
+
+google:
+  auth:
+    url: 'https://oauth2.googleapis.com'
+    scope: 'profile,email,openid'
+  login:
+    url: 'https://accounts.google.com'
+  redirect:
+    uri: 'http://localhost:8080/google/login/redirect'
+  client:
+    id: '1041783776284-d51ld3ucr96nfferog4k8bcsl13jep55.apps.googleusercontent.com'
+  secret: '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'

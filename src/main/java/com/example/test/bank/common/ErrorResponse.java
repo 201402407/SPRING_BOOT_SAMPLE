@@ -1,4 +1,4 @@
-package common;
+package com.example.test.bank.common;
 
 import lombok.Getter;
 import lombok.Setter;

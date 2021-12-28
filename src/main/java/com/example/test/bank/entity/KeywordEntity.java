@@ -1,5 +1,6 @@
 package com.example.test.bank.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,14 +16,15 @@ import lombok.NoArgsConstructor;
 @Getter // Entity Setter 금지 -> 별도 메소드를 만들어, 변경에 대해 명확히 인지 팔요
 @Entity
 @DynamicInsert  // 변경된 필드만 적용(세팅되지 않은 필드는 NULL로)
-@Table(name="SEARCH_RESULT")
+@Table(name="search_result")
 @AllArgsConstructor
 @NoArgsConstructor
 public class KeywordEntity {
 	
 	@Id
 	private String keyword;	// 키워드
-	
+
+	@Column
 	private long searchCount;	// 검색횟수
 	
 	// 첫 검색인 경우

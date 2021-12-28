@@ -1,4 +1,4 @@
-package common;
+package com.example.test.bank.common;
 
 import java.util.List;
 

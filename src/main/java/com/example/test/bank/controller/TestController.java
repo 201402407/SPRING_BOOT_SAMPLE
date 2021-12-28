@@ -37,9 +37,9 @@ import com.example.test.bank.dto.SameWordVO;
 import com.example.test.bank.dto.SearchVO;
 
 import ch.qos.logback.classic.Logger;
-import common.CommonResponse;
-import common.CustomResponse;
-import common.ErrorResponse;
+import com.example.test.bank.common.CommonResponse;
+import com.example.test.bank.common.CustomResponse;
+import com.example.test.bank.common.ErrorResponse;
 import reactor.core.publisher.Mono;
 
 // @Controller + @ResponseBody
@@ -63,16 +63,16 @@ public class TestController {
 	@Autowired
 	private KeywordRepository keywordRepository;
 	
-    @PostConstruct
-    public void initializing() {
-        for (int i = 0; i < 97; i++) {
-            KeywordEntity keyword = KeywordEntity.builder()
-            		.keyword("TEMP" + i)
-            		.searchCount(i / 10)
-                    .build();
-            keywordRepository.save(keyword);
-        }
-    }
+//    @PostConstruct
+//    public void initializing() {
+//        for (int i = 0; i < 97; i++) {
+//            KeywordEntity keyword = KeywordEntity.builder()
+//            		.keyword("TEMP" + i)
+//            		.searchCount(i / 10)
+//                    .build();
+//            keywordRepository.save(keyword);
+//        }
+//    }
     
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String getTestPage() {
