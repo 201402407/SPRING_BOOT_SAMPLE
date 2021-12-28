@@ -3,7 +3,7 @@ package com.example.test.documentapproval.service;
 import com.example.test.common.exceptions.NotFoundException;
 import com.example.test.documentapproval.constants.DocumentStatus;
 import com.example.test.documentapproval.constants.DocumentType;
-import com.example.test.documentapproval.document.DocumentRepository;
+import com.example.test.documentapproval.repository.DocumentRepository;
 import com.example.test.documentapproval.dto.DocumentDto;
 import com.example.test.documentapproval.entities.Document;
 import com.example.test.documentapproval.mapper.DocumentDtoMapper;

@@ -3,19 +3,16 @@ package com.example.test.documentapproval;
 import com.example.test.TestApplicationTests;
 import com.example.test.documentapproval.constants.DocumentStatus;
 import com.example.test.documentapproval.constants.DocumentType;
-import com.example.test.documentapproval.document.DocumentRepository;
+import com.example.test.documentapproval.repository.DocumentRepository;
 import com.example.test.documentapproval.entities.Document;
 import com.example.test.documentapproval.entities.Member;
 import com.example.test.documentapproval.repository.MemberRepository;
-import com.example.test.documentapproval.service.DocumentService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +28,9 @@ public class DocumentApprovalTests extends TestApplicationTests {
 
     @Autowired
     private DocumentRepository documentRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Nested
     @DisplayName("문서 생성")
@@ -78,5 +78,31 @@ public class DocumentApprovalTests extends TestApplicationTests {
     @Test
     void DOCUMENT_전체_조회시_N1_문제_발생_확인() {
         List<Document> documentList = documentRepository.findAll();
+        System.out.println("전체 문서 데이터는 몇개?? " + documentList.size());
+    }
+
+    @Transactional
+    @Test
+    void DOCUMENT_JOIN_FETCH_전체_조회() {
+        List<Document> documentList = documentRepository.findAllWithFetchJoin();
+        System.out.println("전체 문서 데이터는 몇개?? " + documentList.size());
+    }
+
+    @Transactional
+    @Test
+    void MEMBER_전체_조회시_N1_문제_발생_확인() {
+        List<Member> memberList = memberRepository.findAll();
+//        for(Member member: memberList) {
+//            System.out.println(member.getMemberId() + "의 Document의 개수는?? " + member.getDocumentList().size());
+//        }
+    }
+
+    @Transactional
+    @Test
+    void MEMBER_JOIN_FETCH_전체_조회() {
+        List<Member> memberList = memberRepository.findAllWithFetchJoin();
+        for(Member member: memberList) {
+            System.out.println(member.getMemberId() + "의 Document의 개수는?? " + member.getDocumentList().size());
+        }
     }
 }

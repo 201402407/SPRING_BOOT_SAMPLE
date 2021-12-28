@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -25,7 +26,7 @@ public class Document {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer documentId;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)	// default fetch type: EAGER
 	@JoinColumn(name = "registered_member_id", referencedColumnName = "member_id")
 	private Member registeredMember;
 	
