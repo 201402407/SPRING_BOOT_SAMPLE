@@ -85,21 +85,32 @@ public class DocumentApprovalTests extends TestApplicationTests {
     @Test
     void DOCUMENT_JOIN_FETCH_전체_조회() {
         List<Document> documentList = documentRepository.findAllWithFetchJoin();
-        System.out.println("전체 문서 데이터는 몇개?? " + documentList.size());
+        for(Document document: documentList) {
+            System.out.println(document.getRegisteredMember().getMemberId());
+        }
     }
 
     @Transactional
     @Test
     void MEMBER_전체_조회시_N1_문제_발생_확인() {
         List<Member> memberList = memberRepository.findAll();
-//        for(Member member: memberList) {
-//            System.out.println(member.getMemberId() + "의 Document의 개수는?? " + member.getDocumentList().size());
-//        }
+        for(Member member: memberList) {
+            System.out.println(member.getMemberId() + "의 Document의 개수는?? " + member.getDocumentList().size());
+        }
     }
 
     @Transactional
     @Test
     void MEMBER_JOIN_FETCH_전체_조회() {
+        List<Member> memberList = memberRepository.findAllWithFetchJoin();
+        for(Member member: memberList) {
+            System.out.println(member.getMemberId() + "의 Document의 개수는?? " + member.getDocumentList().size());
+        }
+    }
+
+    @Transactional
+    @Test
+    void MEMBER_JOIN_FETCH_2개의_엔티티_조회() {
         List<Member> memberList = memberRepository.findAllWithFetchJoin();
         for(Member member: memberList) {
             System.out.println(member.getMemberId() + "의 Document의 개수는?? " + member.getDocumentList().size());

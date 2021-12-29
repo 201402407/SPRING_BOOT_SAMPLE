@@ -22,17 +22,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Member {
-	
-	@Id
-	@Column(name = "member_id")
-	private String memberId;
-	
-	@Column
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private String pwd;
-	
-	@Column
-	private String name;
 
 	/*
 	양방향이 아니지만, N+1 테스트를 위해 임시로 추가
@@ -40,8 +29,24 @@ public class Member {
 	@BatchSize(size = 3)	// 이를 사용하기 위해선 Fetch Type을 EAGER로 변경해야함
 	@JsonIgnore //JSON 변환시 무한 루프 방지용
 	// default Fetch Type: LAZY
-	@OneToMany(mappedBy = "registeredMember", targetEntity = Document.class, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "registeredMember", targetEntity = Document.class, fetch = FetchType.LAZY)
 	private List<Document> documentList = new ArrayList<>();
+
+//	@JsonIgnore //JSON 변환시 무한 루프 방지용
+//	// default Fetch Type: LAZY
+//	@OneToMany(mappedBy = "member", targetEntity = Temp.class, fetch = FetchType.EAGER)
+//	private List<Temp> tempList = new ArrayList<>();
+
+	@Id
+	@Column(name = "member_id")
+	private String memberId;
+
+	@Column
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private String pwd;
+
+	@Column
+	private String name;
 
 	@Column(name = "created_at")
 	@CreationTimestamp

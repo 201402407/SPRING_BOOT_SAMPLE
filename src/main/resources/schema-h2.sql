@@ -43,3 +43,8 @@ CREATE TABLE search_result (
    keyword			    varchar(50) NOT NULL PRIMARY KEY,
    searchCount			int NOT NULL
 );
+
+CREATE TABLE temp (
+    temp        varchar(50) NOT NULL PRIMARY KEY,
+    member_id	varchar(50) NOT NULL
+);

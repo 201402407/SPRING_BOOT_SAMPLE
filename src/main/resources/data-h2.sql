@@ -23,10 +23,17 @@ VALUES
     (7, 'banner4', 'PROGRESS', 'VACATION', 'BANNER3', '내용입니다.', null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO approvals
-    (approval_id, document_id, member_id, seq, approval_status, created_at, updated_at)
+(approval_id, document_id, member_id, seq, approval_status, created_at, updated_at)
 VALUES
     (1, 5, 'root', 1, 'WAIT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (4, 1, 'root', 1, 'WAIT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (6, 2, 'root', 1, 'WAIT', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (7, 3, 'root', 1, 'APPROVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO temp
+(temp, member_id)
+VALUES
+    ('temp', 'root'),
+    ('temp2', 'root2'),
+    ('temp3', 'root3');
 
