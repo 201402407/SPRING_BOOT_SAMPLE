@@ -11,7 +11,6 @@ com\example\test\google\dto\GoogleLoginResponse.class
 com\example\test\bank\dto\SameWordRVO$SameWordRVOBuilder.class
 com\example\test\bank\common\CustomResponse.class
 com\example\test\config\BeanConfiguration.class
-com\example\test\documentapproval\document\DocumentRepository.class
 com\example\test\google\GoogleController.class
 com\example\test\bank\dto\SearchVO.class
 com\example\test\bank\dto\KeywordDTO.class
@@ -35,8 +34,10 @@ com\example\test\utils\ApiUtils.class
 com\example\test\bank\common\ErrorResponse.class
 com\example\test\documentapproval\entities\Document.class
 com\example\test\google\constants\ConfigUtils.class
+com\example\test\documentapproval\repository\DocumentRepository.class
 com\example\test\bank\dto\NaverApiItem.class
 com\example\test\common\StructMapper.class
+com\example\test\documentapproval\entities\Temp.class
 com\example\test\documentapproval\constants\DocumentStatus.class
 com\example\test\documentapproval\entities\Document$DocumentBuilder.class
 com\example\test\documentapproval\entities\Member.class
@@ -54,6 +55,7 @@ com\example\test\documentapproval\repository\MemberRepository.class
 com\example\test\TestApplication.class
 com\example\test\google\GoogleController$1.class
 com\example\test\bank\dto\SearchVO$SearchVOBuilder.class
+com\example\test\documentapproval\entities\Temp$TempBuilder.class
 com\example\test\documentapproval\dto\DocumentDto.class
 com\example\test\documentapproval\mapper\MemberDtoMapperImpl.class
 com\example\test\documentapproval\constants\DocumentType.class
