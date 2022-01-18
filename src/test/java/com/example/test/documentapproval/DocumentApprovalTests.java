@@ -131,7 +131,7 @@ public class DocumentApprovalTests extends TestApplicationTests {
         void SAVE_시간_측정_테스트() {
             long start = System.currentTimeMillis();
 
-            int count = 1000;
+            int count = 10;
             String memberId = "memberId";
             String pwd = "temp";
             String name = "이름";
@@ -154,7 +154,7 @@ public class DocumentApprovalTests extends TestApplicationTests {
         void SAVEALL_시간_측정_테스트() {
             long start = System.currentTimeMillis();
 
-            int count = 1000;
+            int count = 10;
             String memberId = "memberId";
             String pwd = "temp";
             String name = "이름";
