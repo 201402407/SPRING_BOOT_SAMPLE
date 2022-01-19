@@ -143,7 +143,7 @@ public class TestController {
 		logger.info("INFO");
 		logger.error("ERROR");
 		logger.trace("TRACE");
-		String value = "리테스트입니두";
+		String value = "리테스트입니당 진짜최종최종최종";
 		return value;
 	}
 	
