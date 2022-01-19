@@ -143,7 +143,7 @@ public class TestController {
 		logger.info("INFO");
 		logger.error("ERROR");
 		logger.trace("TRACE");
-		String value = "테스트입니다. 이 문장이 나오면 빌드 및 배포 성공했습니다.";
+		String value = "리테스트입니두";
 		return value;
 	}
 	
