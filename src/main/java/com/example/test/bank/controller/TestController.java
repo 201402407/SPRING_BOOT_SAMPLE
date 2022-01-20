@@ -143,7 +143,7 @@ public class TestController {
 		logger.info("INFO");
 		logger.error("ERROR");
 		logger.trace("TRACE");
-		String value = "리테스트입니당 진짜최종최종최종";
+		String value = "SUDO를 넣어서 프로세스를 죽이자";
 		return value;
 	}
 	
